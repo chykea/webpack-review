@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * 1. 执行的时机不同
+         *  loader: 从编译入口出发开始构建依赖,对每一个文件都会进行下面的顺序
+         *          - 调用NormalModule.build() 构建模块(每引用一个文件就是一个模块)
+         *          - 对每一个模块调用runLoaders执行模块所匹配的loaders,获取经过loader处理后的模块源码
+         *          - 调用this.parser.parse()解析处理后的模块源码,提取模块依赖
+         *          - 对提取的模块依赖,再重复以上步骤
+         *  plugin: 调用的时机比较灵活,实际上webpack在整个运行过程中,都会调用相应的钩子,可以选择对应的钩子去执行plugin
+         *          - 在配置文件中,一般都是需要new一个Plugin的实例,在webpack读取配置文件时,会去获取这些实例
+         *             
+         *  2. loader一般是一个函数,plugin一般是一个对象
+         */
+    </script>
+</body>
+
+</html>
