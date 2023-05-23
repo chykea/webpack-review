@@ -28,19 +28,44 @@
         或者需要通过 return Promise 的方式。在下面会介绍 tapAsync 和 tapPromise 
 */
 
+/*
+    Compiler 对象包含了 Webpack 环境所有的的配置信息，包含 options，loaders，plugins 这些信息，这个对象在 Webpack 启动时候被实例化，
+    它是全局唯一的，可以简单地把它理解为 Webpack 实例；上面提到的 apply 方法传入的参数就是它
+
+    Compilation 对象包含了当前的模块资源、编译生成资源、变化的文件等。当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建。
+    Compilation 对象也提供了很多事件回调供插件做扩展。通过 Compilation 也能读取到 Compiler 对象。
+
+    Compiler 和 Compilation 的区别在于：
+        Compiler 代表了整个 Webpack 从启动到关闭的生命周期，而 Compilation 只是代表了一次新的编译。
+
+        源代码发生改变的时候就需要重新编译模块，但是compiler可以继续使用
+        如果使用compiler则需要重新初始化注册所有plugin，但是plugin没必要重新注册
+        (因为plugin主要是为了解决loader无法解决的事,loader一般用于将模块进行编译,而插件并不需要编译模块代码,所以对项目的代码并没有影响,所以不用重新初始化插件)
+        这时候就需要创建一个新的compilation对象
+        而只有修改新的webpack配置才需要重新运行 npm run build 来重新生成 compiler对象
+*/
 
 class BasicPlugin {
+    static _defaultOptions = {}
     constructor(options) {
-
+        this.options = {
+            ...BasicPlugin._defaultOptions,
+            ...options,
+        }
     }
     // 其中必须实现一个 apply 方法，apply 方法接收 webpack 的 compiler 对象
     apply(compiler) {
-        compiler.hooks.complication.tap('BasicPlugin', (complication) => {
-            complication.hooks.optimize.tap("BasicPlugin", () => {
-                console.log('plugin is running...');
-                console.log('end');
-            })
-        })
+        /**
+         * 在compiler.hooks中可以找到webpack在运行过程中每个阶段的钩子函数()
+         */
+        console.log();
+        // compiler.hooks.compilation.tap('BasicPlugin', (compilation) => {
+        //     compilation.hooks.optimize.tap("BasicPlugin", () => {
+        //         console.log('plugin is running...');
+        //         console.log('read options', this.options);
+        //         console.log('end');
+        //     })
+        // })
     }
 }
 

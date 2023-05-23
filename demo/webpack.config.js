@@ -1,5 +1,6 @@
 
 const { resolve } = require('path')
+const BasicPlugin = require('./plugins/examplePlugin')
 
 module.exports = {
     entry: {
@@ -25,6 +26,8 @@ module.exports = {
             }
         ]
     },
+    plugins: [new BasicPlugin({ name: 'basicPlugin' })],
+
     // 配置自定义loader别名,
     // 因为不是在npm下载的,webpack识别不到自定义loader的名称以及对应的loader路径
     resolveLoader: {
