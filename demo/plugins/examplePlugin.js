@@ -57,8 +57,8 @@ class BasicPlugin {
     apply(compiler) {
         /**
          * 在compiler.hooks中可以找到webpack在运行过程中每个阶段的钩子函数()
+         * 指路: 可以打开webpack运行阶段的hooks图片
          */
-        console.log();
         // compiler.hooks.compilation.tap('BasicPlugin', (compilation) => {
         //     compilation.hooks.optimize.tap("BasicPlugin", () => {
         //         console.log('plugin is running...');

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            在了解热更新的过程之前,需要了解以下概念
+                webpack-compiler: 将Js编译成bundle.js
+                HMR server: 将热更新的文件输出给HMR Runtime
+                Bundle Server: 提供文件给浏览器访问(当开启了热模块更新时,Bundle Server会在第一次构建项目时启动,只会启动一次)
+                HMR Runtime: 开启了热更新的话,在打包阶段(开启Bundle Server)就会被出入到浏览器中的bundle.js,这样bundle.js就可以
+                            和服务器进行连接,通常是websocket,当收到服务器的更新指令时,就去更新文件的变化
+                bundle.js: 编译后输出的文件
+            启动阶段:
+                修改后的文件经过webpack-compiler的编译后传输给bundle server,bundle server可以让浏览器访问编译后的文件
+            热更新的过程(开启了热更新):   
+                1. 修改文件,webpack compiler监听文件变化,然后对变化的文件进行编译输出bundle.js,并把bundle.js传输给HRM server
+                2. HRM server知道哪个模块发生了变化,并通知HMR Runtime有哪些变化,HRM Runtime就会更新我们的代码,这样浏览器就会局部
+                    更新
+            
+            浏览器是怎么知道要更新的呢？
+                通过上面我们知道,
+                本地实际上启动了一个 HMR Server 服务，
+                而且在启动 Bundle Server 的时候已经往我们的 bundle.js 中注入了 HMR Runtime(主要用来启动 Websocket，接受 HMR Server 发来的变更)
+            所以我们的问题可以聚焦于以下几点:
+                Webpack 如何启动了 HMR Server
+                HMR Server 如何跟 HMR Runtime 进行通信的
+                HMR Runtime 接受到变更之后，如何生效的
+
+                webpack如何启动HMR Server
+                    - 在Bundle Server启动之后,就会创建一个websocket连接,HMR Server就是在这个时候创建的
+
+                HMR Server 如何跟 HMR Runtime 进行通信的
+                    - 首先第一个问题就是: HMR server在什么时候与HMR Runtime进行通信(什么时候通知HMR runtime去更新)
+                      通过webpack创建的compiler(监听文件变化,自动编译输出)实例,可以往compiler.hooks.done(文件被编译完成时的时机)钩子注册事件
+                      当监听到事件触发后,就会执行this.setStats方法
+                            - setStats: 里面会像客户端发送hash和ok事件
+                      客户端通过hash可以与上次的资源进行比较(reloadApp),对比出差异后客户端可以向服务端
+                      发送请求(webpackHotUpdate事件,服务端通过NodeJs的EventEmitter(发布订阅)来监听webpackHotUpdate事件)来获取更改内容,
+                
+                HMR Runtime如何更新bundle.js
+                    客户端就可以借助这些信息来向服务端发送jsonp请求(通过script标签请求资源,在这里是请求更新的js文件,可以直接执行)进行增量更新
+
+                
+        */
+
+    </script>
+</body>
+
+</html>

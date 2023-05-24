@@ -1,4 +1,6 @@
 
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { resolve } = require('path')
 const BasicPlugin = require('./plugins/examplePlugin')
 
@@ -18,16 +20,38 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                use: ['custom-loader']
+                use: ['custom-loader'],
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,
-                use: ['single-style-loader']
+                use: [
+                    // 'single-style-loader',
+                    'style-loader', // style-loader 实现了 HMR 接口；当它通过 HMR 接收到更新，它会使用新的样式替换旧的样式。
+                    'css-loader',
+
+                ]
             }
         ]
     },
-    plugins: [new BasicPlugin({ name: 'basicPlugin' })],
+    plugins: [
+        new BasicPlugin({ name: 'basicPlugin' }), // 自定义插件
 
+        new HtmlWebpackPlugin({
+            template: './index.html'
+        }),
+        new CleanWebpackPlugin(),
+    ],
+
+    devServer: {
+        static: './dist',
+        compress: true, // 是否压缩
+        port: 9000,
+        open: true, // open为true表示用默认浏览器打开
+    },
+    optimization: {
+        runtimeChunk: 'single'
+    },
     // 配置自定义loader别名,
     // 因为不是在npm下载的,webpack识别不到自定义loader的名称以及对应的loader路径
     resolveLoader: {

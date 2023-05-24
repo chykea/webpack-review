@@ -22,8 +22,8 @@ loader.pitch = function (remainingRequest, precedingRequest, data) {
         data：每个 loader 中存放在上下文中的固定字段，可用于 pitch 给 loader 传递数据。
     */
     const logger = this.getLogger()
-    logger.info(1, remainingRequest)  // 请求路径,即处理文件的路径
-    logger.info(2, precedingRequest)  // 
+    logger.info(1, remainingRequest)
+    logger.info(2, precedingRequest)
     logger.info(3, data)
 }
 module.exports = loader

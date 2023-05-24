@@ -5,9 +5,10 @@
 // 也因此loader中的this是有意义的
 function loader(content, map, meta) {
     const logger = this.getLogger()
-    logger.info('custom-loader is running')
-    logger.info(content) // content就是所处理的文件中的内容
+    // logger.info('custom-loader is running')
+    // logger.info(content) // content就是所处理的文件中的内容
     this.callback(null, content, map, meta)
+    logger.info('自定义loader')
     return
 }
 module.exports = loader
