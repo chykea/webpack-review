@@ -9,7 +9,21 @@
 </head>
 
 <body>
-    <script></script>
+    <script>
+        /*
+            从两方面入手:
+                1. 项目体积
+                    - 可以对html,css,js代码进行压缩
+                    - (多入口文件的情况)可以通过optimization.splitChunk提取公共代码
+                    - 图片压缩
+                    - tree-shaking,它可以消除未使用的代码和模块，减少构建的体积和时间，可以在webpack配置文件中进行配置
+                2. 资源读取
+                    - 缓存: cache-loader,适用于性能开销较大的项目
+                    - 预编译: DllPlugin,可用于指定一些不会轻易更改的第三方库
+                    - 可以排除一些文件的loader编译,比如node_modules,第三方库已经进行编译了,无需再一次编译
+                    - 多进程打包: thread-loader
+        */
+    </script>
 </body>
 
 </html>

@@ -5,10 +5,11 @@ const { resolve } = require('path')
 const BasicPlugin = require('./plugins/examplePlugin')
 
 module.exports = {
-    entry: {
-        index: './src/index.js',
-        other: './src/js/ohter.js'
-    },
+    // entry: {
+    //     index: './src/index.js',
+    //     other: './src/js/ohter.js'
+    // },
+    entry: './src/index.js',
     output: {
         path: resolve(__dirname, './dist'),
         filename: '[name].js'
@@ -50,6 +51,7 @@ module.exports = {
         open: true, // open为true表示用默认浏览器打开
     },
     optimization: {
+        usedExports: true, // 开启tree-shaking,在production模式下默认开启
         runtimeChunk: 'single'
     },
     // 配置自定义loader别名,
